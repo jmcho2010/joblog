@@ -1,0 +1,50 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+CLAUDE.local.md
+AGENTS.override.md
+
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+vendor/
+
+# Build output and caches
+dist/
+build/
+out/
+.next/
+next-env.d.ts
+# Rewritten by every `next dev`; not a rule file we maintain.
+apps/web/AGENTS.md
+target/
+coverage/
+*.tsbuildinfo
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# graphify generated output
+graphify-out/
+
+# Logs and local data
+*.log
+logs/
+*.sqlite
+*.sqlite3
+*.db
+
+# Editor and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

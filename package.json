@@ -1,0 +1,22 @@
+{
+  "name": "joblog",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "setup": "npm run setup:web && npm run setup:ai",
+    "setup:web": "npm --prefix apps/web ci",
+    "setup:ai": "python -m venv services/ai/.venv && node scripts/py.mjs -m pip install -r requirements-dev.txt",
+    "dev:web": "npm --prefix apps/web run dev",
+    "dev:ai": "node --env-file-if-exists=.env scripts/py.mjs -m app",
+    "test": "npm run test:web && npm run test:ai && npm run test:db",
+    "test:web": "npm --prefix apps/web test",
+    "test:ai": "node scripts/py.mjs -m pytest",
+    "test:db": "bash supabase/run_local_check.sh",
+    "lint": "npm run lint:web && npm run lint:ai",
+    "lint:web": "npm --prefix apps/web run lint && npm --prefix apps/web run typecheck",
+    "lint:ai": "node scripts/py.mjs -m ruff check . && node scripts/py.mjs -m mypy",
+    "db:migrate": "node scripts/db-guide.mjs"
+  }
+}
