@@ -1,0 +1,25 @@
+---
+description: Use when committing, pushing, creating a repo or PR, or preparing the project for a public GitHub release
+alwaysApply: false
+---
+
+# GitHub release readiness
+
+## Pre-commit gate
+1. `git status` and review the staged diff. Stage files by name, not `git add -A` blindly.
+2. Scan staged changes for secrets and personal data (keys, tokens, `.env`, emails, phone numbers, real job/company records).
+3. Confirm `.gitignore` covers env files, dependencies, build output, logs, editor and OS files, and local databases.
+4. Run the project's test, lint, and build commands if they exist.
+
+## Commits
+- Conventional style: `type(scope): imperative summary` (`feat`, `fix`, `refactor`, `docs`, `test`, `chore`). Summary under 72 chars; the body explains why.
+- One logical change per commit. No "WIP" or "misc" commits.
+- Never use `--no-verify`, `--force`, or `--amend` on pushed commits without explicit approval.
+
+## Before the first public push
+- A secret that was ever committed must be rotated. Do not rely on history rewriting.
+- Add a `LICENSE` (ask the user which) and a README covering what the project is, how to install and run it, and how to configure env vars. Ask before creating these.
+- Keep `.env.example` current with names only.
+- Never commit real user data, even in fixtures or screenshots. Use fake data.
+- Suggest enabling GitHub secret scanning, push protection, and Dependabot on the repo.
+- Default to a private repo unless the user explicitly asks for public.

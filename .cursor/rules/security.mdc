@@ -1,0 +1,40 @@
+---
+description: Security checklist for source, config, and infra files
+globs: **/*.{ts,tsx,js,jsx,mjs,cjs,py,go,rs,java,kt,cs,rb,php,sql,sh,ps1,yml,yaml,json,toml,env*,Dockerfile}
+alwaysApply: false
+---
+
+# Security checklist
+
+Apply when writing or reviewing code that touches input, auth, data, network, files, or config.
+
+## Secrets
+- Secrets come from environment variables or a secret manager. Document names in `.env.example` with empty/fake values only.
+- Never put real values in code, tests, fixtures, comments, logs, error messages, or CI files.
+- If a secret was exposed, tell the user to rotate it. Deleting the commit is not enough.
+
+```
+// BAD
+const apiKey = "sk-live-abc123";
+
+// GOOD
+const apiKey = process.env.API_KEY;
+if (!apiKey) throw new Error("API_KEY is not set");
+```
+
+## Input and data
+- Validate type, length, and range at every trust boundary (HTTP, CLI, file, env, DB).
+- Use parameterized queries only. Never build SQL, shell, or paths by string concatenation.
+- Avoid `eval`, `exec`, `shell=True`, and unsafe deserialization on untrusted data.
+- Prevent path traversal: resolve and check paths against an allowed base directory.
+- Do not log personal data (names, emails, job/company details) or full request bodies.
+
+## Auth and network
+- Enforce authorization on the server for every protected action. Never trust client-side checks.
+- Use HTTPS, secure/HttpOnly/SameSite cookies, and an explicit CORS allowlist (no `*` with credentials).
+- Hash passwords with a standard algorithm (argon2/bcrypt/scrypt). Never invent crypto.
+- Error responses must not leak stack traces or internals.
+
+## Dependencies
+- Prefer maintained, widely used packages. Pin versions and commit the lockfile.
+- Run the ecosystem audit (`npm audit`, `pip-audit`, `cargo audit`, etc.) before release.
